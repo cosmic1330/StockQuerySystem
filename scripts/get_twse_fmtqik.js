@@ -6,7 +6,7 @@ const { transactionsInsertsMultipleData, pool } = require('./utils/connect_db');
 
 let start_year = 2001;
 let start_month_index = 0;
-const end_year = new Date().getFullYear();
+const end_year = `${new Date().getFullYear()}`;
 const end_month = new Date().getMonth();
 let end_day = null;
 const months = [
