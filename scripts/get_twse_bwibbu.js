@@ -3,25 +3,10 @@
 const axios = require('axios');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { transactionsInsertsMultipleData, pool } = require('./utils/connect_db');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const getDatabaseStockIdList = require('./utils/get_database_stock_id_list');
 
 let db_stocks = [];
-// 請求資料庫最新日期
-async function getDBDate() {
-  try {
-    const quertText =
-      'SELECT stock_id, stock_name FROM stock WHERE enabled = TRUE';
-    const res = await pool.query(quertText);
-    if (res.rows.length > 0) {
-      db_stocks = res.rows.map((item) => [item.stock_id, item.stock_name]);
-      console.log('匯入資料庫股票完畢');
-    } else {
-      console.log('資料庫無資料');
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 // 請求證交所目前上市股票代碼
 function makeRequest() {
   return new Promise((resolve, reject) => {
@@ -45,7 +30,7 @@ function makeRequest() {
 
 void makeRequest()
   .then(async (data) => {
-    await getDBDate();
+    db_stocks = await getDatabaseStockIdList();
     if (db_stocks.length === 0) {
       queryText = 'INSERT INTO stock(stock_id, stock_name) VALUES($1, $2)';
       await transactionsInsertsMultipleData(queryText, data);

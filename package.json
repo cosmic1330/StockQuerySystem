@@ -27,7 +27,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "env-cmd jest --config ./test/jest-e2e.json",
-    "prepare": "is-ci || husky install"
+    "prepare": "is-ci || husky install",
+    "getNewStockData":"node ./scripts/get_twse_fmtqik.js && node ./scripts/get_stock_day_deal"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.360.0",
