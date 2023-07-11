@@ -11,8 +11,8 @@ const { transactionsInsertsMultipleData, pool } = require('./utils/connect_db');
 const delay = require('./utils/delay');
 
 const args = process.argv.slice(2);
-const start_date = args[0] || '2020-01-01'; // $1
-const end_date = args[1] || '2022-12-01'; // $2
+const start_date = args[0] || '2004-02-11'; // $1
+const end_date = args[1] || '2023-07-11'; // $2
 
 let db_stocks = [];
 let client;
@@ -26,6 +26,7 @@ let client;
 
 async function getTWSEStockDealByDate(stocks, date) {
   return new Promise(async (resolve, reject) => {
+    console.log(`日期:${date}，開始`);
     try {
       const stockIds = stocks.map((stock) => stock[0]);
       const stockNames = stocks.map((stock) => stock[1]);
@@ -38,7 +39,7 @@ async function getTWSEStockDealByDate(stocks, date) {
       const data = [];
       if (res?.data?.tables) {
         const obj = res.data.tables.find(
-          (table) => table.title.indexOf('每日收盤行情') > -1,
+          (table) => table?.title?.indexOf('每日收盤行情') > -1,
         );
         obj.data.forEach((stock) => {
           const stockId = stock[0];
