@@ -35,6 +35,7 @@ async function transactionsInsertsMultipleData(queryText, datas) {
     await client.query('BEGIN');
     // 使用批次插入
     for (let i = 0; i < datas.length; i++) {
+      // console.log(datas[i]); // debug here
       await client.query(queryText, datas[i]);
     }
     await client.query('COMMIT');

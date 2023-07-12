@@ -8,6 +8,7 @@ const formatTwsePilesString = require('./utils/formatPilesString');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const delay = require('./utils/delay');
 
+let client;
 function getLegalPersonMissingDataStocks() {
   return new Promise(async (resolve, reject) => {
     try {
@@ -57,7 +58,6 @@ async function queryLegalPersonData(date, stocks) {
           const index = stocks.findIndex((stock) => stock[0] === stock_id);
           if (
             index !== -1 &&
-            stocks[index][1] === stock_name &&
             !isNaN(foreign_investors_data) &&
             !isNaN(investment_trust_data) &&
             !isNaN(dealer_data)
@@ -89,7 +89,7 @@ async function run() {
   client = await pool.connect();
   try {
     const missData = await getLegalPersonMissingDataStocks();
-    const dateArr = Object.keys(missData);
+    const dateArr = Object.keys(missData).reverse();
     for (let i = 0; i < dateArr.length; i++) {
       await delay();
       const date = dateArr[i];
@@ -97,9 +97,9 @@ async function run() {
     }
   } catch (error) {
     console.error('run error', error);
-  } finally {
-    client.release();
   }
 }
 
-void run();
+run().finally(() => {
+  client.release();
+});

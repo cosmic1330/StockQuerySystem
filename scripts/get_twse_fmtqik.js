@@ -109,8 +109,9 @@ async function run() {
     }
   } catch (error) {
     console.log(error);
-  } finally {
-    pool.end().then(() => console.log('資料庫連線已關閉！'));
   }
 }
-void run();
+run().finally(() => {
+  pool.end().then(() => console.log('資料庫連線已關閉！'));
+  console.log('結束！');
+});

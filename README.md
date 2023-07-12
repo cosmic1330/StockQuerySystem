@@ -13,10 +13,15 @@
 |3.|get_stock_day_deal|取得Yahoo股票資料，並回補資料庫缺少的資料(適合追朔未來資料)|N/A|
 |4.|check_stock_date_from_twse|取得證交所資料，填補Yahoo缺少的資料(適合追朔過去資料)|config\n #證交所歷史紀錄從2004-02-11|
 |5.|get_twse_t86|比對交易資料並補齊法人資料|#證交所歷史紀錄2012-05-02|
+|6.|get_stock_eps|取得eps季度和每季eps資料|執行implement.js|
 
 ```shell
 # 取得新數據
 pnpm getNewStockData
 # 取得歷史資料
 node ./scripts/check_stock_date_from_twse <start_date>  <end_date>
+# 資料庫備份
+bash ./scripts/backup_database/backup.sh 
+# 資料庫還原
+bash ./scripts/backup_database/restore.sh <dump檔名> <還原db名稱>
 ```

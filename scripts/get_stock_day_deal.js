@@ -31,10 +31,7 @@ function queryYahooStocks(url, stock_id, stock_name) {
         resolve([]);
       } else {
         const api_res_data = JSON.parse(json_string);
-        if (
-          api_res_data.mem.id === stock_id &&
-          api_res_data.mem.name === stock_name
-        ) {
+        if (api_res_data.mem.id === stock_id) {
           resolve(api_res_data.ta);
         } else {
           yahoo_error_stocks.push([stock_id, stock_name, '名稱不符合']);
@@ -162,10 +159,10 @@ async function run() {
     await client.query('ROLLBACK');
   } finally {
     console.log(`錯誤股票代號：${yahoo_error_stocks}`);
-    client.release();
   }
 }
 
 run().finally(() => {
+  client.release();
   console.log('finally');
 });
